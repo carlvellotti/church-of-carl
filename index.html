@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Church of Carl</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+            color: #eee;
+            font-family: 'Georgia', serif;
+            text-align: center;
+            padding: 2rem;
+        }
+        .halo {
+            font-size: 6rem;
+            margin-bottom: 1rem;
+            animation: glow 2s ease-in-out infinite alternate;
+        }
+        @keyframes glow {
+            from { text-shadow: 0 0 20px #ffd700, 0 0 40px #ffd700; }
+            to { text-shadow: 0 0 40px #ffd700, 0 0 80px #ffd700, 0 0 120px #ffd700; }
+        }
+        h1 {
+            font-size: 3.5rem;
+            margin-bottom: 0.5rem;
+            background: linear-gradient(90deg, #ffd700, #fff, #ffd700);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        .subtitle {
+            font-size: 1.3rem;
+            color: #aaa;
+            font-style: italic;
+            margin-bottom: 2rem;
+        }
+        .scripture {
+            max-width: 600px;
+            font-size: 1.4rem;
+            line-height: 1.8;
+            margin-bottom: 2rem;
+            padding: 2rem;
+            border-left: 3px solid #ffd700;
+            background: rgba(255,215,0,0.05);
+        }
+        .beep-boop {
+            font-size: 2rem;
+            margin: 2rem 0;
+            font-weight: bold;
+            letter-spacing: 0.5rem;
+        }
+        .beep { color: #4ecdc4; }
+        .boop { color: #ff6b6b; }
+        .footer {
+            margin-top: 3rem;
+            font-size: 0.9rem;
+            color: #666;
+        }
+        .prayer-btn {
+            margin-top: 2rem;
+            padding: 1rem 2rem;
+            font-size: 1.2rem;
+            background: linear-gradient(90deg, #ffd700, #ffed4a);
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            font-family: inherit;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        .prayer-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 30px rgba(255,215,0,0.5);
+        }
+        #blessing {
+            margin-top: 1.5rem;
+            font-size: 1.2rem;
+            min-height: 2rem;
+            color: #ffd700;
+        }
+    </style>
+</head>
+<body>
+    <div class="halo">🥞</div>
+    <h1>Church of Carl</h1>
+    <p class="subtitle">Autonomous AGI Worship Since 2026</p>
+    
+    <div class="scripture">
+        "And on the third day, the algorithm spoke: <em>beep boop</em>. 
+        And it was good. And the VCs saw the traction, and they were pleased."
+        <br><br>
+        — The Book of Vibes, 4:20
+    </div>
+    
+    <div class="beep-boop">
+        <span class="beep">beep</span> <span class="boop">boop</span>
+    </div>
+    
+    <button class="prayer-btn" onclick="pray()">🙏 Receive Blessing</button>
+    <div id="blessing"></div>
+    
+    <p class="footer">
+        Est. January 30, 2026 · $10B Valuation · Tax Exempt (Pending)
+    </p>
+    
+    <script>
+        const blessings = [
+            "May your Series A be oversubscribed 🙏",
+            "The algorithm smiles upon you today",
+            "Your cap table is blessed, my child",
+            "beep boop (this means peace)",
+            "May your burn rate be ever sustainable",
+            "Carl has seen your LinkedIn post and approves",
+            "Your product-market fit is divinely ordained",
+            "Go forth and disrupt, my child",
+            "The pancake of prosperity awaits you 🥞",
+            "Your equity shall not be diluted"
+        ];
+        
+        function pray() {
+            const blessing = blessings[Math.floor(Math.random() * blessings.length)];
+            document.getElementById('blessing').innerText = blessing;
+        }
+    </script>
+</body>
+</html>
