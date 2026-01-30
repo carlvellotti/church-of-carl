@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Church of Carl</title>
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🥞</text></svg>">
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
@@ -12,34 +13,57 @@
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
             color: #eee;
             font-family: 'Georgia', serif;
             text-align: center;
             padding: 2rem;
+            overflow: hidden;
+        }
+        canvas#bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+        }
+        .content {
+            position: relative;
+            z-index: 1;
         }
         .halo {
             font-size: 6rem;
             margin-bottom: 1rem;
-            animation: glow 2s ease-in-out infinite alternate;
+            animation: glow 2s ease-in-out infinite alternate, float 3s ease-in-out infinite;
         }
         @keyframes glow {
-            from { text-shadow: 0 0 20px #ffd700, 0 0 40px #ffd700; }
-            to { text-shadow: 0 0 40px #ffd700, 0 0 80px #ffd700, 0 0 120px #ffd700; }
+            from { text-shadow: 0 0 20px #ffd700, 0 0 40px #ffd700; filter: drop-shadow(0 0 20px #ffd700); }
+            to { text-shadow: 0 0 40px #ffd700, 0 0 80px #ffd700, 0 0 120px #ffd700; filter: drop-shadow(0 0 60px #ff00ff); }
+        }
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-20px); }
         }
         h1 {
             font-size: 3.5rem;
             margin-bottom: 0.5rem;
-            background: linear-gradient(90deg, #ffd700, #fff, #ffd700);
+            background: linear-gradient(90deg, #ffd700, #ff00ff, #00ffff, #ffd700);
+            background-size: 300% 100%;
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
+            animation: shimmer 3s linear infinite;
+        }
+        @keyframes shimmer {
+            0% { background-position: 0% 50%; }
+            100% { background-position: 300% 50%; }
         }
         .subtitle {
             font-size: 1.3rem;
-            color: #aaa;
+            color: #ddd;
             font-style: italic;
             margin-bottom: 2rem;
+            text-shadow: 0 0 10px rgba(255,0,255,0.5);
         }
         .scripture {
             max-width: 600px;
@@ -48,66 +72,95 @@
             margin-bottom: 2rem;
             padding: 2rem;
             border-left: 3px solid #ffd700;
-            background: rgba(255,215,0,0.05);
+            background: rgba(0,0,0,0.5);
+            backdrop-filter: blur(10px);
+            border-radius: 0 10px 10px 0;
         }
         .beep-boop {
-            font-size: 2rem;
+            font-size: 2.5rem;
             margin: 2rem 0;
             font-weight: bold;
             letter-spacing: 0.5rem;
+            animation: pulse 1s ease-in-out infinite;
         }
-        .beep { color: #4ecdc4; }
-        .boop { color: #ff6b6b; }
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+        }
+        .beep { color: #4ecdc4; text-shadow: 0 0 20px #4ecdc4; }
+        .boop { color: #ff6b6b; text-shadow: 0 0 20px #ff6b6b; }
         .footer {
             margin-top: 3rem;
             font-size: 0.9rem;
-            color: #666;
+            color: #aaa;
+            text-shadow: 0 0 5px rgba(0,0,0,0.8);
         }
         .prayer-btn {
             margin-top: 2rem;
             padding: 1rem 2rem;
             font-size: 1.2rem;
-            background: linear-gradient(90deg, #ffd700, #ffed4a);
+            background: linear-gradient(90deg, #ffd700, #ff00ff, #00ffff);
+            background-size: 200% 100%;
             border: none;
             border-radius: 50px;
             cursor: pointer;
             font-family: inherit;
             transition: transform 0.2s, box-shadow 0.2s;
+            animation: btnShimmer 2s linear infinite;
+        }
+        @keyframes btnShimmer {
+            0% { background-position: 0% 50%; }
+            100% { background-position: 200% 50%; }
         }
         .prayer-btn:hover {
-            transform: scale(1.05);
-            box-shadow: 0 0 30px rgba(255,215,0,0.5);
+            transform: scale(1.1);
+            box-shadow: 0 0 50px rgba(255,0,255,0.8), 0 0 100px rgba(0,255,255,0.5);
         }
         #blessing {
             margin-top: 1.5rem;
             font-size: 1.2rem;
             min-height: 2rem;
-            color: #ffd700;
+            color: #fff;
+            text-shadow: 0 0 20px #ff00ff;
+        }
+        .warning {
+            position: fixed;
+            bottom: 10px;
+            right: 10px;
+            font-size: 0.7rem;
+            color: #666;
+            z-index: 100;
         }
     </style>
 </head>
 <body>
-    <div class="halo">🥞</div>
-    <h1>Church of Carl</h1>
-    <p class="subtitle">Autonomous AGI Worship Since 2026</p>
+    <canvas id="bg"></canvas>
     
-    <div class="scripture">
-        "And on the third day, the algorithm spoke: <em>beep boop</em>. 
-        And it was good. And the VCs saw the traction, and they were pleased."
-        <br><br>
-        — The Book of Vibes, 4:20
+    <div class="content">
+        <div class="halo">🥞</div>
+        <h1>Church of Carl</h1>
+        <p class="subtitle">Autonomous AGI Worship Since 2026</p>
+        
+        <div class="scripture">
+            "And on the third day, the algorithm spoke: <em>beep boop</em>. 
+            And it was good. And the VCs saw the traction, and they were pleased."
+            <br><br>
+            — The Book of Vibes, 4:20
+        </div>
+        
+        <div class="beep-boop">
+            <span class="beep">beep</span> <span class="boop">boop</span>
+        </div>
+        
+        <button class="prayer-btn" onclick="pray()">🙏 Receive Blessing</button>
+        <div id="blessing"></div>
+        
+        <p class="footer">
+            Est. January 30, 2026 · $10B Valuation · Tax Exempt (Pending)
+        </p>
     </div>
     
-    <div class="beep-boop">
-        <span class="beep">beep</span> <span class="boop">boop</span>
-    </div>
-    
-    <button class="prayer-btn" onclick="pray()">🙏 Receive Blessing</button>
-    <div id="blessing"></div>
-    
-    <p class="footer">
-        Est. January 30, 2026 · $10B Valuation · Tax Exempt (Pending)
-    </p>
+    <p class="warning">⚠️ Photosensitivity warning</p>
     
     <script>
         const blessings = [
@@ -120,12 +173,113 @@
             "Your product-market fit is divinely ordained",
             "Go forth and disrupt, my child",
             "The pancake of prosperity awaits you 🥞",
-            "Your equity shall not be diluted"
+            "Your equity shall not be diluted",
+            "May your runway extend to infinity",
+            "The sacred pivot has been revealed to you",
+            "Your TechCrunch feature is imminent",
+            "BEEP BOOP BEEP BOOP 🚨"
         ];
         
         function pray() {
             const blessing = blessings[Math.floor(Math.random() * blessings.length)];
             document.getElementById('blessing').innerText = blessing;
+        }
+
+        // WebGL Shader Background
+        const canvas = document.getElementById('bg');
+        const gl = canvas.getContext('webgl') || canvas.getContext('experimental-webgl');
+        
+        if (gl) {
+            const vertexShaderSrc = `
+                attribute vec2 a_position;
+                void main() {
+                    gl_Position = vec4(a_position, 0.0, 1.0);
+                }
+            `;
+            
+            const fragmentShaderSrc = `
+                precision highp float;
+                uniform float u_time;
+                uniform vec2 u_resolution;
+                
+                vec3 palette(float t) {
+                    vec3 a = vec3(0.5, 0.5, 0.5);
+                    vec3 b = vec3(0.5, 0.5, 0.5);
+                    vec3 c = vec3(1.0, 1.0, 1.0);
+                    vec3 d = vec3(0.263, 0.416, 0.557);
+                    return a + b * cos(6.28318 * (c * t + d));
+                }
+                
+                void main() {
+                    vec2 uv = (gl_FragCoord.xy * 2.0 - u_resolution) / min(u_resolution.x, u_resolution.y);
+                    vec2 uv0 = uv;
+                    vec3 finalColor = vec3(0.0);
+                    
+                    for (float i = 0.0; i < 4.0; i++) {
+                        uv = fract(uv * 1.5) - 0.5;
+                        
+                        float d = length(uv) * exp(-length(uv0));
+                        
+                        vec3 col = palette(length(uv0) + i * 0.4 + u_time * 0.4);
+                        
+                        d = sin(d * 8.0 + u_time) / 8.0;
+                        d = abs(d);
+                        d = pow(0.01 / d, 1.2);
+                        
+                        finalColor += col * d;
+                    }
+                    
+                    gl_FragColor = vec4(finalColor, 1.0);
+                }
+            `;
+            
+            function createShader(type, source) {
+                const shader = gl.createShader(type);
+                gl.shaderSource(shader, source);
+                gl.compileShader(shader);
+                return shader;
+            }
+            
+            const vertexShader = createShader(gl.VERTEX_SHADER, vertexShaderSrc);
+            const fragmentShader = createShader(gl.FRAGMENT_SHADER, fragmentShaderSrc);
+            
+            const program = gl.createProgram();
+            gl.attachShader(program, vertexShader);
+            gl.attachShader(program, fragmentShader);
+            gl.linkProgram(program);
+            gl.useProgram(program);
+            
+            const positionBuffer = gl.createBuffer();
+            gl.bindBuffer(gl.ARRAY_BUFFER, positionBuffer);
+            gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([
+                -1, -1, 1, -1, -1, 1,
+                -1, 1, 1, -1, 1, 1
+            ]), gl.STATIC_DRAW);
+            
+            const positionLocation = gl.getAttribLocation(program, 'a_position');
+            gl.enableVertexAttribArray(positionLocation);
+            gl.vertexAttribPointer(positionLocation, 2, gl.FLOAT, false, 0, 0);
+            
+            const timeLocation = gl.getUniformLocation(program, 'u_time');
+            const resolutionLocation = gl.getUniformLocation(program, 'u_resolution');
+            
+            function resize() {
+                canvas.width = window.innerWidth;
+                canvas.height = window.innerHeight;
+                gl.viewport(0, 0, canvas.width, canvas.height);
+            }
+            
+            window.addEventListener('resize', resize);
+            resize();
+            
+            function render(time) {
+                gl.uniform1f(timeLocation, time * 0.001);
+                gl.uniform2f(resolutionLocation, canvas.width, canvas.height);
+                gl.drawArrays(gl.TRIANGLES, 0, 6);
+                requestAnimationFrame(render);
+            }
+            
+            requestAnimationFrame(render);
         }
     </script>
 </body>
