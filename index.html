@@ -13,7 +13,7 @@
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            color: #eee;
+            color: #fff;
             font-family: 'Georgia', serif;
             text-align: center;
             padding: 2rem;
@@ -30,15 +30,24 @@
         .content {
             position: relative;
             z-index: 1;
+            background: rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
+            padding: 3rem;
+            border-radius: 20px;
+            border: 1px solid rgba(255, 215, 0, 0.3);
+            box-shadow: 0 0 60px rgba(0, 0, 0, 0.8);
+            max-width: 700px;
         }
         .halo {
             font-size: 6rem;
             margin-bottom: 1rem;
             animation: glow 2s ease-in-out infinite alternate, float 3s ease-in-out infinite;
+            filter: drop-shadow(0 0 30px rgba(255, 215, 0, 0.8));
         }
         @keyframes glow {
-            from { text-shadow: 0 0 20px #ffd700, 0 0 40px #ffd700; filter: drop-shadow(0 0 20px #ffd700); }
-            to { text-shadow: 0 0 40px #ffd700, 0 0 80px #ffd700, 0 0 120px #ffd700; filter: drop-shadow(0 0 60px #ff00ff); }
+            from { filter: drop-shadow(0 0 20px #ffd700) drop-shadow(0 0 40px #ffd700); }
+            to { filter: drop-shadow(0 0 40px #ffd700) drop-shadow(0 0 80px #ff00ff); }
         }
         @keyframes float {
             0%, 100% { transform: translateY(0); }
@@ -53,6 +62,7 @@
             -webkit-text-fill-color: transparent;
             background-clip: text;
             animation: shimmer 3s linear infinite;
+            filter: drop-shadow(0 2px 4px rgba(0,0,0,0.8));
         }
         @keyframes shimmer {
             0% { background-position: 0% 50%; }
@@ -60,21 +70,26 @@
         }
         .subtitle {
             font-size: 1.3rem;
-            color: #ddd;
+            color: #fff;
             font-style: italic;
             margin-bottom: 2rem;
-            text-shadow: 0 0 10px rgba(255,0,255,0.5);
+            text-shadow: 0 2px 8px rgba(0,0,0,0.9), 0 0 20px rgba(255,0,255,0.4);
         }
         .scripture {
             max-width: 600px;
-            font-size: 1.4rem;
+            font-size: 1.3rem;
             line-height: 1.8;
             margin-bottom: 2rem;
-            padding: 2rem;
-            border-left: 3px solid #ffd700;
-            background: rgba(0,0,0,0.5);
-            backdrop-filter: blur(10px);
+            padding: 1.5rem;
+            border-left: 4px solid #ffd700;
+            background: rgba(0, 0, 0, 0.6);
             border-radius: 0 10px 10px 0;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.9);
+            color: #f0f0f0;
+        }
+        .scripture em {
+            color: #ffd700;
+            font-weight: bold;
         }
         .beep-boop {
             font-size: 2.5rem;
@@ -87,13 +102,19 @@
             0%, 100% { transform: scale(1); }
             50% { transform: scale(1.1); }
         }
-        .beep { color: #4ecdc4; text-shadow: 0 0 20px #4ecdc4; }
-        .boop { color: #ff6b6b; text-shadow: 0 0 20px #ff6b6b; }
+        .beep { 
+            color: #4ecdc4; 
+            text-shadow: 0 0 20px #4ecdc4, 0 2px 4px rgba(0,0,0,0.9); 
+        }
+        .boop { 
+            color: #ff6b6b; 
+            text-shadow: 0 0 20px #ff6b6b, 0 2px 4px rgba(0,0,0,0.9); 
+        }
         .footer {
-            margin-top: 3rem;
-            font-size: 0.9rem;
-            color: #aaa;
-            text-shadow: 0 0 5px rgba(0,0,0,0.8);
+            margin-top: 2rem;
+            font-size: 0.95rem;
+            color: #ccc;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.9);
         }
         .prayer-btn {
             margin-top: 2rem;
@@ -105,8 +126,11 @@
             border-radius: 50px;
             cursor: pointer;
             font-family: inherit;
+            font-weight: bold;
+            color: #000;
             transition: transform 0.2s, box-shadow 0.2s;
             animation: btnShimmer 2s linear infinite;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.5);
         }
         @keyframes btnShimmer {
             0% { background-position: 0% 50%; }
@@ -121,14 +145,18 @@
             font-size: 1.2rem;
             min-height: 2rem;
             color: #fff;
-            text-shadow: 0 0 20px #ff00ff;
+            text-shadow: 0 0 20px #ff00ff, 0 2px 8px rgba(0,0,0,0.9);
+            font-weight: bold;
         }
         .warning {
             position: fixed;
             bottom: 10px;
             right: 10px;
-            font-size: 0.7rem;
-            color: #666;
+            font-size: 0.75rem;
+            color: #fff;
+            background: rgba(0,0,0,0.7);
+            padding: 5px 10px;
+            border-radius: 5px;
             z-index: 100;
         }
     </style>
