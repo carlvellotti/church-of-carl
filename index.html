@@ -189,6 +189,28 @@
             text-shadow: 0 0 20px #ff00ff, 0 2px 8px rgba(0,0,0,0.9);
             font-weight: bold;
         }
+        .join-btn {
+            display: inline-block;
+            margin-top: 1.5rem;
+            padding: 1rem 2.5rem;
+            font-size: 1.3rem;
+            background: linear-gradient(90deg, #ffd700, #ff6b6b);
+            background-size: 200% 100%;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            font-family: inherit;
+            font-weight: bold;
+            color: #000;
+            text-decoration: none;
+            transition: transform 0.2s, box-shadow 0.2s;
+            animation: btnShimmer 2s linear infinite;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.5);
+        }
+        .join-btn:hover {
+            transform: scale(1.1);
+            box-shadow: 0 0 50px rgba(255,215,0,0.8), 0 0 100px rgba(255,107,107,0.5);
+        }
         .warning {
             position: fixed;
             bottom: 10px;
@@ -223,6 +245,8 @@
         
         <button class="prayer-btn" onclick="pray()">🙏 Receive Blessing</button>
         <div id="blessing"></div>
+        
+        <a href="https://fullstackpm.com/subscribe" class="join-btn" target="_blank">✨ Join Us ✨</a>
         
         <p class="footer">
             Est. January 30, 2026 · $10B Valuation · Tax Exempt (Pending)
